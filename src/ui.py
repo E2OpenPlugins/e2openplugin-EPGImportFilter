@@ -114,8 +114,9 @@ def findBouquet(ref, bouquet = None):
 										if not (a.toCompareString().lower().find(rf) == -1):
 											return s;
 	return None
-		
-selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/selectioncross.png"))
+
+#selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/selectioncross.png"))
+selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/lock_on.png"))
 redxpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/lock_error.png"))
 #redxpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "Extensions/EPGImportFilter/disabled.png")) 
 	
@@ -188,13 +189,13 @@ class ColoredList(HTMLComponent, GUIComponent):
 		
 	def toggleAll(self, setValue = None):
 		oneSelected = False; oneUnselected = False
-		if len([v for v in self["list"].list if v[2] > 0]) > 0:
+		if len([v for v in self.list if v[2] > 0]) > 0:
 			oneSelected = True
-		if len([v for v in self["list"].list if v[2] == 0]) > 0:
+		if len([v for v in self.list if v[2] == 0]) > 0:
 			oneUnselected = True
 			
-		for idx,i in enumerate(self["list"].list):
-			item = i[idx]
+		for idx,i in enumerate(self.list):
+			item = self.list[idx]
 			if not (setValue is None):
 				ret = setValue
 			else:
@@ -253,18 +254,22 @@ class ColoredList(HTMLComponent, GUIComponent):
 			self.instance.moveSelection(self.instance.pageDown)
 
 class EGPSelectEPGSources(Screen):
-	skin = """<screen name="EPGSelectEPGSourcesScreen" position="center,42" zPosition="2" size="1230,660" title="Select EPG sources" >
-		<ePixmap pixmap="skin_default/div-h.png" position="0,535" zPosition="2" size="1260,2" />
-		<widget name="key_green" position="10,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="green" />		
-		<widget name="key_blue" position="140,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="blue" />		
-		<widget name="list" position="10,20" size="590,510" scrollbarMode="showOnDemand" />
-		<ePixmap alphatest="on" pixmap="skin_default/icons/clock.png" position="1147,628" size="14,14" zPosition="3"/>
-		<widget font="Regular;18" halign="right" position="1170,623" render="Label" size="55,28" source="global.CurrentTime" transparent="1" valign="center" zPosition="3">
-			<convert type="ClockToText">Default</convert>
-		</widget>
-		<widget name="videoPicture" position="720,20" size="500,273" zPosition="1" backgroundColor="transparent" />
+	#skin = """<screen name="EPGSelectEPGSourcesScreen" position="center,42" zPosition="2" size="1230,660" title="Select EPG sources" >
+		# <ePixmap pixmap="skin_default/div-h.png" position="0,535" zPosition="2" size="1260,2" />
+		# <widget name="key_green" position="10,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="green" />		
+		# <widget name="key_blue" position="140,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="blue" />		
+		# <widget name="list" position="10,20" size="590,510" scrollbarMode="showOnDemand" />
+		# <ePixmap alphatest="on" pixmap="skin_default/icons/clock.png" position="1147,628" size="14,14" zPosition="3"/>
+		# <widget font="Regular;18" halign="right" position="1170,623" render="Label" size="55,28" source="global.CurrentTime" transparent="1" valign="center" zPosition="3">
+			# <convert type="ClockToText">Default</convert>
+		# </widget>
+		# <widget name="videoPicture" position="720,20" size="500,273" zPosition="1" backgroundColor="transparent" />
+	# </screen>"""
+	skin = """<screen name="EPGSelectEPGSourcesScreen" position="fill" zPosition="2" flags="wfNoBorder" title="Select EPG sources" >
+		<panel name="PigTemplate"/>
+		<panel name="ButtonTemplate_RG"/>   
+		<widget name="list" position="590,110" size="600,485" scrollbarMode="showOnDemand" />
 	</screen>"""
-	#	<widget name="videoPicture" position="820,20" size="395,215" zPosition="1" backgroundColor="transparent" />
 	
 	def __init__(self, session):
 		self.session = session
@@ -285,13 +290,13 @@ class EGPSelectEPGSources(Screen):
 		self["choiseActions"] = NumberActionMap(["DirectionActions", "EPGSelectActions", "NumberActions", "OkCancelActions", "ColorActions", "TimerEditActions"],
 			{
 				"cancel": self.cancel,
+				"red": self.proceed,
 				"green": self["list"].toggleAll,
-				"blue": self.proceed,
 				"ok": self["list"].toggleSelection
 			}, -2)
 
+		self["key_red"] = Label(_("Proceed"))
 		self["key_green"] = Label(_("Select all"))
-		self["key_blue"] = Label(_("Proceed"))
 	
 	def proceed(self):
 		self.close([(v[0],v[1],v[2]) for v in self["list"].list if v[2] > 0])
@@ -740,12 +745,6 @@ class EGPMatchByName(Screen):
 		if confirmed:
 			self.offerToSave = False
 				
-			epgWorker.bouquets = []
-			for idx,item in enumerate(self["list"].list):
-					item = self["list"].list[idx][0]
-					if item[3]:
-						epgWorker.bouquets.append(item[0])
-						
 			epgWorker.storeAll()
 			if len(epgWorker.channels) > 0:
 				del epgWorker.channels[:]
@@ -788,15 +787,22 @@ class EGPMatchByName(Screen):
 		self.close(self.session, False)
 					
 class EPGImportFilterScreen(Screen):
-	skin = """<screen name="EPGImportFilterScreen" position="center,center" zPosition="2" size="700,610" title="EPGImport Filter" >
-		<ePixmap pixmap="skin_default/div-h.png" position="0,510" zPosition="2" size="700,2" />
-		<widget name="key_red" position="10,580" zPosition="2" size="130,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="red" />
-		<widget name="key_green" position="130,580" zPosition="2" size="130,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="green" />
-		<widget name="key_yellow" position="250,580" zPosition="2" size="180,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="yellow" />
-		<widget name="key_blue" position="390,580" zPosition="2" size="130,28" valign="center" halign="right" font="Regular;22" transparent="1" foregroundColor="blue" />		
-		<widget name="list" position="10,20" size="690,485" scrollbarMode="showOnDemand" />
-		<widget name="statusbar" position="10,520" halign="right" size="680,30" font="Regular;20" />
-		<widget name="status" position="10,550" halign="right" size="680,30" font="Regular;20" />
+	#skin = """<screen name="EPGImportFilterScreen" position="center,center" zPosition="2" size="700,610" title="EPGImport Filter" >
+	# <ePixmap pixmap="skin_default/div-h.png" position="0,510" zPosition="2" size="700,2" />
+	# <widget name="key_red" position="10,580" zPosition="2" size="130,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="red" />
+	# <widget name="key_green" position="130,580" zPosition="2" size="130,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="green" />
+	# <widget name="key_yellow" position="250,580" zPosition="2" size="180,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="yellow" />
+	# <widget name="key_blue" position="390,580" zPosition="2" size="130,28" valign="center" halign="right" font="Regular;22" transparent="1" foregroundColor="blue" />		
+	# <widget name="list" position="10,20" size="690,485" scrollbarMode="showOnDemand" />
+	# <widget name="statusbar" position="10,520" halign="right" size="680,30" font="Regular;20" />
+	# <widget name="status" position="10,550" halign="right" size="680,30" font="Regular;20" />
+	#<ePixmap pixmap="skin_default/div-h.png" position="0,510" zPosition="2" size="700,2" />
+	skin = """<screen name="EPGImportFilterScreen" position="fill" title="EPGImport Filter" flags="wfNoBorder">
+		<panel name="PigTemplate"/>
+		<panel name="ButtonTemplate_RGYB"/>   
+		<widget name="list" position="590,110" size="600,485" scrollbarMode="showOnDemand" />
+		<widget name="statusbar" position="85,520" halign="left" size="417,30" font="Regular;20" />
+		<widget name="status" position="85,550" halign="left" size="417,30" font="Regular;20" />				
 	</screen>"""
 
 	def __init__(self, session):
@@ -819,17 +825,17 @@ class EPGImportFilterScreen(Screen):
 		self["statusbar"] = Label()
 		self["status"] = Label()
 		self["list"] = SelectionList(sources)
-		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "TimerEditActions"],
+		self["setActions"] = ActionMap(["OkCancelActions", "ColorActions", "TimerEditActions"],
 			{
 				"cancel": self.cancel,
-				"red": self.remove,
+				"red": self.uninstall,
 				"green": self.selectAll,
 				"yellow": self.advanced,
 				"blue": self.install,
 				"ok": self.toggle
 			}, -2)
 
-		self["key_red"] = Label(_("Deinstall"))
+		self["key_red"] = Label(_("Uninstall"))
 		self["key_green"] = Label(_("Select All"))
 		self["key_yellow"] = Label(_("Advanced"))
 		self["key_blue"] = Label(_("Install"))
@@ -865,14 +871,21 @@ class EPGImportFilterScreen(Screen):
 		epgWorker.updateStatus = None
 		self.session.openWithCallback(None, EGPMatchByName)	
 		
-	def remove(self):
-		# removing all files
-		try:
-			os.remove("/etc/epgimport/filteredchannels.xml")
-			os.remove("/etc/epgimport/filteredrytec.sources.xml")
-		except:
-			pass
-		self.session.open(MessageBox, _("EPGImport Filter Service removed.."), MessageBox.TYPE_INFO, timeout = 1000, close_on_any_key = True)
+	def uninstall(self):
+		self.session.openWithCallback(self.proceedUninstall, MessageBox, _("EPGImport Filter Plugin\nDo you want to remove EPGImport channel filtering?"), MessageBox.TYPE_YESNO, timeout = 15, default = True)
+	
+	def proceedUninstall(self, confirmed):
+		if confirmed:
+			# removing all files
+			try:
+				os.remove("/etc/epgimport/filteredchannels.xml")
+				os.remove("/etc/epgimport/filteredrytec.sources.xml")
+			except: pass
+			self.session.open(MessageBox, _("EPGImport Filter Service removed.."), MessageBox.TYPE_INFO, timeout = 1000, close_on_any_key = True)
+			self.updateTimer.stop()	
+			self.updateTimer.stop()	
+			epgWorker.updateStatus = None
+			self.proceedCancel()		
 	
 	def selectAll(self):
 		#selected = [ item[0][1] for item in self["list"].list if item[0][3]]

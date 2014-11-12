@@ -400,9 +400,9 @@ class EPGImportFilterWorker:
 				text_file = open("/etc/epgimport/filteredchannels.xml", "w")				
 				#text_file = codecs.open("/etc/epgimport/filteredchannels.xml", "w", "latin-1")
 				text_file.truncate()		
-				text_file.write('<?xml version="1.0" encoding="latin-1"?>')
-				text_file.write('<!-- service references can be found in /etc/enigma2/lamedb -->')
-				text_file.write('<channels>')
+				text_file.write('<?xml version="1.0" encoding="latin-1"?>\n')
+				text_file.write('<!-- service references can be found in /etc/enigma2/lamedb -->\n')
+				text_file.write('<channels>\n')
 
 				v = [v for v in self.matchings if v[mcState] > 0]
 				fileSize = len(v)
@@ -416,7 +416,7 @@ class EPGImportFilterWorker:
 						line = '<channel id="' + i[mcProgram] + '">' + i[mcRef] + '</channel> <!-- -->\n'
 						line = line.decode("utf-8").encode("latin-1")
 						text_file.write(line)
-				text_file.write('</channels>')
+				text_file.write('</channels>\n')
 				text_file.close()
 			except Exception,e:
 				self.status = "Error when writing channels: " + str(e)
@@ -508,16 +508,21 @@ class EPGImportFilterWorker:
 		#text_file = open("/etc/epgimport/what.xml", "w")				
 		#text_file.truncate()		
 		max_entries = 5
-		prog = []
+		prog = []; errors = False
+		# Find file encoding
+		for line in open(epgSourcePath,'r'):
+			encoding = line.split('encoding="')[1].split('"')[0]
+			break
 		try:
 			curTime = time.time()
-			for line in open(epgSourcePath,'r'):					
+			for line in codecs.open(epgSourcePath, "r", encoding): 
+			#for line in open(epgSourcePath,'r'):					
 				fileDone += len(line); r += 1
 				if r >= 100:
 					self.done = round(float(fileDone) / fileSize * 100)
 					if not (self.updateStatus is None): self.updateStatus(self.done)
 					r = 0
-					
+						
 				line = line.strip().encode('utf-8')
 				if inProgramme and (not len(line) < 11 and line[:12] == "</programme>"):
 					inProgramme = False
@@ -551,7 +556,8 @@ class EPGImportFilterWorker:
 				#	subtitleName = line.split(">",1)[1].split("<",1)[0].strip()
 				
 		except Exception, e:
-			self.status = "Error on reading epg: " + str(e)
+			self.status = "Error on reading epg: " + str(e) 
+			errors = True
 
 		# add last that's not added
 		if len(prog) > 0:
@@ -562,8 +568,8 @@ class EPGImportFilterWorker:
 		os.remove(epgSourcePath)
 
 		# Give info
-		#self.status = str(len(self.epgProgramme)) + " epg entries loaded.." 
-		self.status = str(len(self.epgProgramme)) + " epg programs loaded.." 
+		if not errors:
+			self.status = str(len(self.epgProgramme)) + " epg programs loaded.."
 		self.done = 100		
 		
 		self.dispatchEpgLoad()
