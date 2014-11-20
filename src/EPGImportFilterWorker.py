@@ -299,7 +299,7 @@ class EPGImportFilterWorker:
 		if twisted.python.runtime.platform.supportsThreads():
 			threads.deferToThread(self.proceedCreateFilteredChannelFileThread, result, filename, False).addCallback(lambda ignore: None)
 		else:
-			proceedCreateFilteredChannelFileThread(result, filename, False)
+			self.proceedCreateFilteredChannelFileThread(result, filename, False)
 		
 	def proceedCreateFilteredChannelFileThread(self, result, filename, deleteFile = False):
 		# proceed with installation after downloading the channel file
