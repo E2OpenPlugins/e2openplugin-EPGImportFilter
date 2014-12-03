@@ -7,7 +7,7 @@ import shutil
 import calendar
 import codecs
 
-import localdifflib
+import difflib
 
 from twisted.internet import reactor, threads
 from twisted.web.client import downloadPage
@@ -600,9 +600,9 @@ class EPGImportFilterWorker:
 			s = [v[eCompare] for v in self.epgChannels]
 			count = 50
 		
-		match = localdifflib.get_close_matches(d[cCompare], s, count, 0.5)
+		match = difflib.get_close_matches(d[cCompare], s, count, 0.5)
 		if len(match) < count:
-			match = localdifflib.get_close_matches(d[cCompare], s, count, 0.10)
+			match = difflib.get_close_matches(d[cCompare], s, count, 0.10)
 
 		k = [idx for idx,v in enumerate(self.epgChannels) if v[eCompare] in match]
 		if len(k) > 0:
