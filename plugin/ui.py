@@ -8,7 +8,7 @@ import os
 import time
 import enigma
 import shutil
-import localdifflib
+#import localdifflib
 
 from twisted.web.client import downloadPage
 
