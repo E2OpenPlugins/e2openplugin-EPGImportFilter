@@ -8,7 +8,6 @@ import os
 import time
 import enigma
 import shutil
-#import localdifflib
 
 from twisted.web.client import downloadPage
 
@@ -417,6 +416,16 @@ class EGPMatchByName(Screen):
 		self.onLayoutFinish.append(self.onLoad)			
 				
 	def updateStatus(self, done = None):
+	
+		#if epgWorker.download_active > 0:
+		#	epgWorker.download_active = epgWorker.download_active + 1
+		
+		#	if epgWorker.download_active >= 4:
+		#		epgWorker.download_active = 0
+		#		epgWorker.download_error = True
+		#		epgWorker.createFilteredChannelFile(epgWorker.onlyLoad)
+
+		#epgWorker.status = "Active: " + str(epgWorker.download_active) + "," + epgWorker.channelSource
 		self["statusbar"].setText(epgWorker.status)
 		if epgWorker.active:
 			if not (done is None):
@@ -439,6 +448,7 @@ class EGPMatchByName(Screen):
 		if self.waitForEpgWorker == 2 and not epgWorker.active:
 			self.waitForEpgWorker = 0
 			self.refreshMatches
+			
 			
 	def onLoad(self):
 		self.refreshChannels()

@@ -144,6 +144,9 @@ class EPGImportFilterWorker:
 		self.bouquets = [] 
 		self.status = ""
 		self.done = 0
+		self.download_error = False
+		self.download_active = 0
+		self.filename = ""
 		self.doneStr = "%"
 		self.updateStatus = None
 		#self.doneLoading = None
@@ -252,54 +255,76 @@ class EPGImportFilterWorker:
 		self.active = True
 		self.done = 0
 		# Parse Rytec_sources.xml
-		inChannels = False; inSources = False; sourceName = ""
-		if self.channelSource == "":
+		inChannels = False; inSources = False; sourceName = ""; watch = True
+		if self.download_error:
+			watch = False
+		if self.channelSource == "" or self.download_error:
 			for line in open('/etc/epgimport/rytec.sources.xml','r'):				
 					try:
 						line = line.encode('utf-8')
 					except Exception, e: pass
 					if not line.find("</channel>") == -1 and inChannels:
 						inChannels = False
-					elif not line.find("channel name=") == -1:
+					elif not line.find("channel name=") == -1 and not line.find("rytec.channels.xml.gz") == -1:
 						inChannels = True
-					elif self.channelSource == "" and inChannels and line.find("<url>"):					
+					elif (self.channelSource == "" or self.download_error) and inChannels and line.find("<url>"):					
 						# find only first channel source for now
-						self.channelSource = line.split(">")[1].split("<")[0]
+						if self.download_error and self.channelSource == line.split(">")[1].split("<")[0]:
+							watch = True
+							self.channelSource = ""
+							self.download_error = False
+						else:
+							if watch:
+								self.channelSource = line.split(">")[1].split("<")[0]											
 					elif not line.find("</source>") == -1 and inSources:
 						inSources = False
 					elif not line.find("source type=") == -1:
 						inSources = True
 					elif inSources and not line.find("<description>") == -1:
 						sourceName = line.split(">",1)[1].split("<",1)[0]
-					elif inSources and not line.find("<url>") == -1:
+					elif inSources and not line.find("<url>") == -1 and not self.download_error:
 						# Load epg source file download links
 						# name, filename, chosen on epg load
 						self.epgSources.append([sourceName, line.split(">")[1].split("<")[0]])
 		
+		self.download_error = False
 		if self.channelSource == "":
 			self.status = "No channel download links found in /etc/epgimport/rytec.sources.xml.."
 			self.active = 0
 			return
 		
 		self.onlyLoad = onlyLoad
+		#self.download_active += 1
+		self.download_error = False
 		self.downloadFile(self.channelSource, self.proceedCreateFilteredChannelFile, self.downloadFail)	
 								
-	def downloadFile(self, sourcefile, afterDownload, downloadFail):
+	def downloadFail(self, failure):
+		# This procedure is not working
+		self.status = "Error: " + failure + " while downloading files.."
+		self.active = False
+		self.download_error = True
+		if twisted.python.runtime.platform.supportsThreads():
+			threads.deferToThread(self.CreateFilteredChannelFile, self.onlyLoad).addCallback(lambda ignore: None)
+		else:
+			self.CreateFilteredChannelFile(self.onlyLoad)
+		
+	def proceedCreateFilteredChannelFile(self, result):
+		self.download_active = 0
+		self.download_error = False
+		if twisted.python.runtime.platform.supportsThreads():
+			threads.deferToThread(self.proceedCreateFilteredChannelFileThread, result, self.filename, False).addCallback(lambda ignore: None)
+		else:
+			self.proceedCreateFilteredChannelFileThread(result, self.filename, False)
+		
+	def downloadFile(self, sourcefile, afterDownload, vdownloadFail):
 		path = bigStorage(2000000, '/tmp', '/media/cf', '/media/usb', '/media/hdd')
 		s = sourcefile.split("/")		
 		filename = os.path.join(path, s[len(s)-1])
-		downloadPage(sourcefile, filename).addCallbacks(afterDownload, downloadFail, callbackArgs=(filename, True))	
+		#self.status = "Download: " + str(self.download_active) + "," + filename + " from: " + sourcefile
+		self.filename = filename
+		#downloadPage(sourcefile, filename).addCallbacks(afterDownload, vdownloadFail, callbackArgs=(filename,True))	
+		downloadPage(sourcefile, filename).addCallbacks(afterDownload, vdownloadFail)
 		return filename
-		
-	def downloadFail(self, failure):
-		self.status = "Error: " + failure + " while downloading files.."
-		self.active = False
-		
-	def proceedCreateFilteredChannelFile(self, result, filename, deleteFile = False):
-		if twisted.python.runtime.platform.supportsThreads():
-			threads.deferToThread(self.proceedCreateFilteredChannelFileThread, result, filename, False).addCallback(lambda ignore: None)
-		else:
-			self.proceedCreateFilteredChannelFileThread(result, filename, False)
 		
 	def proceedCreateFilteredChannelFileThread(self, result, filename, deleteFile = False):
 		# proceed with installation after downloading the channel file
@@ -476,15 +501,20 @@ class EPGImportFilterWorker:
 			self.active = True
 			self.done = 0
 			if not (self.updateStatus is None): self.updateStatus(self.done)
-			self.downloadFile(self.epgLoadSources[self.epgLoadCounter][1], self.proceedEpgLoad, self.downloadFail)	
+			self.downloadFile(self.epgLoadSources[self.epgLoadCounter][1], self.proceedEpgLoad, self.downloadSimpleFail)	
 		else:
 			self.active = False	
-	
-	def proceedEpgLoad(self, result, filename, deleteFile = False):
+
+	def downloadSimpleFail(self, failure):
+		self.status = "Error: " + failure + " while downloading files.."
+		self.active = False
+		self.dispatchEpgLoad()
+		
+	def proceedEpgLoad(self, result):
 		if twisted.python.runtime.platform.supportsThreads():
-			threads.deferToThread(self.proceedEpgLoadThread, result, filename, False).addCallback(lambda ignore: None)
+			threads.deferToThread(self.proceedEpgLoadThread, result, self.filename, False).addCallback(lambda ignore: None)
 		else:
-			proceedEpgLoadThread(result, filename, False)
+			proceedEpgLoadThread(result, self.filename, False)
 		
 	def proceedEpgLoadThread(self, result, filename, deleteFile = False):
 		# If the file is gz extract it
