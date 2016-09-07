@@ -8,6 +8,7 @@ import os
 import time
 import enigma
 import shutil
+import skin
 
 from twisted.web.client import downloadPage
 
@@ -130,8 +131,9 @@ class ColoredList(HTMLComponent, GUIComponent):
 		self.l = eListboxPythonMultiContent()
 		self.l.setBuildFunc(self.buildEntry)
 		self.setList(self.list)
-		self.l.setFont(0, gFont("Regular", 20))
-		self.l.setItemHeight(30)		
+		font = skin.fonts.get("EPGImportFilterList", ("Regular", 20, 30))
+		self.l.setFont(0, gFont(font[0], font[1]))
+		self.l.setItemHeight(font[2])		
 
 	GUI_WIDGET = eListbox
 
@@ -151,12 +153,15 @@ class ColoredList(HTMLComponent, GUIComponent):
 		elif colored:
 			colorN = self.coloredColor
 								
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, 30, 3, 500, 30, 0, RT_HALIGN_LEFT, name, colorN, colorS))
+		dx, dy, dw, dh = skin.parameters.get("EPGImportFilterListDescr",(30, 3, 500, 30))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, dx, dy, dw, dh, 0, RT_HALIGN_LEFT, name, colorN, colorS))
 				
 		if selected == 2:
-			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHATEST, 0, 0, 30, 30, redxpng))
+			ix, iy, iw, ih = skin.parameters.get("EPGImportFilterListLockOff",(0, 0, 30, 30))
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, ix, iy, iw, ih, redxpng))
 		elif selected > 0:
-			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHATEST, 0, 0, 30, 30, selectionpng))
+			ix, iy, iw, ih = skin.parameters.get("EPGImportFilterListLockOn",(0, 0, 30, 30))
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, ix, iy, iw, ih, selectionpng))
 		
 		return res
 
