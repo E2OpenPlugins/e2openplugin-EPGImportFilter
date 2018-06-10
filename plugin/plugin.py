@@ -1,7 +1,7 @@
 # EpgImport Filter plugin
 # It filters the channels for epgimport
 
-VERSION = "1.12"
+VERSION = "1.2"
 
 import enigma
 

@@ -265,7 +265,7 @@ class EPGImportFilterWorker:
 					except Exception, e: pass
 					if not line.find("</channel>") == -1 and inChannels:
 						inChannels = False
-					elif not line.find("channel name=") == -1 and not line.find("rytec.channels.xml.gz") == -1:
+					elif not line.find("channel name=") == -1 and (not line.find("rytec.channels.xml.gz") == -1 or not line.find("rytec.channels.xml.xz") == -1): # 06.08.18 - xz added
 						inChannels = True
 					elif (self.channelSource == "" or self.download_error) and inChannels and line.find("<url>"):					
 						# find only first channel source for now
@@ -337,7 +337,12 @@ class EPGImportFilterWorker:
 		if filename.endswith('.gz'):
 			system("gunzip " + filename)
 			channelPath = filename.split(".gz")[0]
-
+			
+		# 06.08.18 - xz support
+		if filename.endswith('.xz'): 
+			system("unxz " + filename)
+			channelPath = filename.split(".xz")[0]
+			
 		if not os.path.isfile(channelPath):
 			self.status = "Error when opening file:" + filename
 			self.active = False
@@ -368,8 +373,9 @@ class EPGImportFilterWorker:
 					if not (self.updateStatus is None): self.updateStatus(self.done)
 					r = 0
 
-				if (not len(line) < 9 and line[:11] == "<channel id"):
-				#if not (line.find("<channel id") == -1):
+				# 06.08.18 - reverse comment
+				#if (not len(line) < 9 and line[:11] == "<channel id"):
+				if not (line.find("<channel id") == -1):
 					try: name = line.split('"',1)[1].split('"',1)[0]
 					except: name = ""
 					compareName = self.getCompareName(name)
@@ -518,6 +524,7 @@ class EPGImportFilterWorker:
 		
 	def proceedEpgLoadThread(self, result, filename, deleteFile = False):
 		# If the file is gz extract it
+		# If the file is "xz" extract it
 		self.done = 0
 		self.status = "Parsing epg " + self.epgLoadSources[self.epgLoadCounter][0]
 		self.doneStr = "%"		
@@ -528,6 +535,11 @@ class EPGImportFilterWorker:
 			system("gunzip " + filename)
 			epgSourcePath = filename.split(".gz")[0]
 		
+		# 05.08.18 - xz support
+		if filename.endswith('.xz'):
+			system("unxz " + filename)
+			epgSourcePath = filename.split(".xz")[0]		
+			
 		# Parse epg.xml file
 		inProgramme = False; programName = ""; cnt = 0
 		lastProgramName = ""; titleName = ""; subtitleName = ""; startTime = 0; endTime = 0
