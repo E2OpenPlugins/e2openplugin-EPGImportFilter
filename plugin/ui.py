@@ -121,9 +121,9 @@ def findBouquet(ref, bouquet = None):
 											return s;
 	return None
 
-#selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/selectioncross.png"))
-selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/lock_on.png"))
-redxpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/lock_error.png"))
+#selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/selectioncross.png"))
+selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_on.png"))
+redxpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_error.png"))
 #redxpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "Extensions/EPGImportFilter/disabled.png")) 
 	
 class ColoredList(HTMLComponent, GUIComponent):
@@ -265,11 +265,11 @@ class ColoredList(HTMLComponent, GUIComponent):
 
 class EGPSelectEPGSources(Screen):
 	#skin = """<screen name="EPGSelectEPGSourcesScreen" position="center,42" zPosition="2" size="1230,660" title="Select EPG sources" >
-		# <ePixmap pixmap="skin_default/div-h.png" position="0,535" zPosition="2" size="1260,2" />
+		# <ePixmap pixmap="div-h.png" position="0,535" zPosition="2" size="1260,2" />
 		# <widget name="key_green" position="10,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="green" />		
 		# <widget name="key_blue" position="140,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="blue" />		
 		# <widget name="list" position="10,20" size="590,510" scrollbarMode="showOnDemand" />
-		# <ePixmap alphatest="on" pixmap="skin_default/icons/clock.png" position="1147,628" size="14,14" zPosition="3"/>
+		# <ePixmap alphatest="on" pixmap="icons/clock.png" position="1147,628" size="14,14" zPosition="3"/>
 		# <widget font="Regular;18" halign="right" position="1170,623" render="Label" size="55,28" source="global.CurrentTime" transparent="1" valign="center" zPosition="3">
 			# <convert type="ClockToText">Default</convert>
 		# </widget>
@@ -320,13 +320,13 @@ class EGPMatchByName(Screen):
 	if HD:
 		skin = """<screen name="EPGImportFilterScreen" position="center,42" zPosition="2" size="1870,1020" title="EPGImport Filter" >
 			<widget name="key_red" position="10,980" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="red" />
-			<ePixmap pixmap="skin_default/buttons/key_1.png" position="120,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_2.png" position="150,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_3.png" position="180,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_1.png" position="120,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_2.png" position="150,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_3.png" position="180,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
 			<widget name="key_refresh" position="214,980" zPosition="2" size="230,28" valign="center" halign="left" font="Regular;19" transparent="1" foregroundColor="white" />
-			<ePixmap pixmap="skin_default/buttons/key_4.png" position="385,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_5.png" position="415,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_6.png" position="445,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_4.png" position="385,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_5.png" position="415,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_6.png" position="445,982" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
 			<widget name="key_filter" position="479,980" zPosition="2" size="230,28" valign="center" halign="left" font="Regular;19" transparent="1" foregroundColor="white" />
 			<widget name="key_green" position="640,980" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="green" />		
 			<widget name="key_blue" position="760,980" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="blue" />		
@@ -336,7 +336,7 @@ class EGPMatchByName(Screen):
 			<widget name="text2" position="1135,540" halign="left" size="715,350 " font="Regular;18" />		
 			<widget name="statusbar" position="0,910" halign="right" size="1870,30" font="Regular;20" />
 			<widget name="status" position="0,940" halign="right" size="1870,30" font="Regular;20" />
-			<ePixmap alphatest="on" pixmap="skin_default/icons/clock.png" position="1757,988" size="14,14" zPosition="3"/>
+			<ePixmap alphatest="on" pixmap="icons/clock.png" position="1757,988" size="14,14" zPosition="3"/>
 			<widget font="Regular;18" halign="right" position="1780,983" render="Label" size="55,28" source="global.CurrentTime" transparent="1" valign="center" zPosition="3">
 				<convert type="ClockToText">Default</convert>
 			</widget>
@@ -344,16 +344,16 @@ class EGPMatchByName(Screen):
 		</screen>"""
 	else:
 		skin = """<screen name="EPGImportFilterScreen" position="center,42" zPosition="2" size="1230,660" title="EPGImport Filter" >
-			<ePixmap pixmap="skin_default/div-h.png" position="0,535" zPosition="2" size="1260,2" />
-			<ePixmap pixmap="skin_default/div-h.png" position="410,323" zPosition="2" size="840,2" />
+			<ePixmap pixmap="div-h.png" position="0,535" zPosition="2" size="1260,2" />
+			<ePixmap pixmap="div-h.png" position="410,323" zPosition="2" size="840,2" />
 			<widget name="key_red" position="10,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="red" />
-			<ePixmap pixmap="skin_default/buttons/key_1.png" position="120,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_2.png" position="150,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_3.png" position="180,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_1.png" position="120,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_2.png" position="150,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_3.png" position="180,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
 			<widget name="key_refresh" position="214,620" zPosition="2" size="230,28" valign="center" halign="left" font="Regular;19" transparent="1" foregroundColor="white" />
-			<ePixmap pixmap="skin_default/buttons/key_4.png" position="385,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_5.png" position="415,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/key_6.png" position="445,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_4.png" position="385,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_5.png" position="415,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="buttons/key_6.png" position="445,622" zPosition="2" size="35,25" transparent="1" alphatest="on"/>
 			<widget name="key_filter" position="479,620" zPosition="2" size="230,28" valign="center" halign="left" font="Regular;19" transparent="1" foregroundColor="white" />
 			<widget name="key_green" position="640,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="green" />		
 			<widget name="key_blue" position="760,620" zPosition="2" size="130,28" valign="center" halign="left" font="Regular;22" transparent="1" foregroundColor="blue" />		
@@ -363,7 +363,7 @@ class EGPMatchByName(Screen):
 			<widget name="text2" position="820,340" halign="left" size="400,180" font="Regular;15" />		
 			<widget name="statusbar" position="0,550" halign="right" size="1230,30" font="Regular;20" />
 			<widget name="status" position="0,580" halign="right" size="1230,30" font="Regular;20" />
-			<ePixmap alphatest="on" pixmap="skin_default/icons/clock.png" position="1147,628" size="14,14" zPosition="3"/>
+			<ePixmap alphatest="on" pixmap="icons/clock.png" position="1147,628" size="14,14" zPosition="3"/>
 			<widget font="Regular;18" halign="right" position="1170,623" render="Label" size="55,28" source="global.CurrentTime" transparent="1" valign="center" zPosition="3">
 				<convert type="ClockToText">Default</convert>
 			</widget>
@@ -835,7 +835,7 @@ class EGPMatchByName(Screen):
 					
 class EPGImportFilterScreen(Screen):
 	#skin = """<screen name="EPGImportFilterScreen" position="center,center" zPosition="2" size="700,610" title="EPGImport Filter" >
-	# <ePixmap pixmap="skin_default/div-h.png" position="0,510" zPosition="2" size="700,2" />
+	# <ePixmap pixmap="div-h.png" position="0,510" zPosition="2" size="700,2" />
 	# <widget name="key_red" position="10,580" zPosition="2" size="130,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="red" />
 	# <widget name="key_green" position="130,580" zPosition="2" size="130,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="green" />
 	# <widget name="key_yellow" position="250,580" zPosition="2" size="180,28" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="yellow" />
@@ -843,7 +843,7 @@ class EPGImportFilterScreen(Screen):
 	# <widget name="list" position="10,20" size="690,485" scrollbarMode="showOnDemand" />
 	# <widget name="statusbar" position="10,520" halign="right" size="680,30" font="Regular;20" />
 	# <widget name="status" position="10,550" halign="right" size="680,30" font="Regular;20" />
-	#<ePixmap pixmap="skin_default/div-h.png" position="0,510" zPosition="2" size="700,2" />
+	#<ePixmap pixmap="div-h.png" position="0,510" zPosition="2" size="700,2" />
 	skin = """<screen name="EPGImportFilterScreen" position="fill" title="EPGImport Filter" flags="wfNoBorder">
 		<panel name="PigTemplate"/>
 		<panel name="ButtonTemplate_RGYB"/>   
