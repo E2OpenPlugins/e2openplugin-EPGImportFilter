@@ -65,7 +65,7 @@ class SettingsMgr:
 		for i in self.sections:
 			sources.update({i: []})
 		try:
-			with open(self.settingsFile,'rb') as fp:			
+			with open(self.settingsFile, 'rb') as fp:			
 				for i in self.sections:
 					try:
 						#self.sources.update(pickle.load(fp))
@@ -77,7 +77,7 @@ class SettingsMgr:
 		return sources		
 		
 	def storeUserSettings(self, sources):
-		with open(self.settingsFile,'wb') as fp:			
+		with open(self.settingsFile, 'wb') as fp:			
 			for i in self.sections:
 				try:
 					m = sources[i]
@@ -177,7 +177,7 @@ class EPGImportFilterWorker:
 	def getCompareName(self, name):
 		#d = name
 		#return d.lower().translate(self.trantab).replace(' ','').strip()
-		return name.lower().translate(self.trantab).replace('hd','').replace('tv','').replace(' ','').strip()
+		return name.lower().translate(self.trantab).replace('hd', '').replace('tv', '').replace(' ', '').strip()
 
 	def getCompareRef(self, ref):	
 		# move leading zero on 6th field
@@ -269,7 +269,7 @@ class EPGImportFilterWorker:
 		if self.download_error:
 			watch = False
 		if self.channelSource == "" or self.download_error:
-			for line in open('/etc/epgimport/rytec.sources.xml','r'):				
+			for line in open('/etc/epgimport/rytec.sources.xml', 'r'):				
 					try:
 						line = line.encode('utf-8')
 					except Exception, e:
@@ -292,7 +292,7 @@ class EPGImportFilterWorker:
 					elif not line.find("source type=") == -1:
 						inSources = True
 					elif inSources and not line.find("<description>") == -1:
-						sourceName = line.split(">",1)[1].split("<",1)[0]
+						sourceName = line.split(">", 1)[1].split("<", 1)[0]
 					elif inSources and not line.find("<url>") == -1 and not self.download_error:
 						# Load epg source file download links
 						# name, filename, chosen on epg load
@@ -397,7 +397,7 @@ class EPGImportFilterWorker:
 				#if (not len(line) < 9 and line[:11] == "<channel id"):
 				if not (line.find("<channel id") == -1):
 					try:
-						name = line.split('"',1)[1].split('"',1)[0]
+						name = line.split('"', 1)[1].split('"', 1)[0]
 					except:
 						name = ""
 					compareName = self.getCompareName(name)
@@ -486,7 +486,7 @@ class EPGImportFilterWorker:
 						text_file.write(line)
 				text_file.write('</channels>\n')
 				text_file.close()
-			except Exception,e:
+			except Exception, e:
 				self.status = "Error when writing channels: " + str(e)
 				self.active = False
 				return
@@ -500,7 +500,7 @@ class EPGImportFilterWorker:
 			text_file = open("/etc/epgimport/filteredrytec.sources.xml", "w")				
 			text_file.truncate()
 			inChannels = False
-			for line in open('/etc/epgimport/rytec.sources.xml','r'):	
+			for line in open('/etc/epgimport/rytec.sources.xml', 'r'):	
 					line = line.encode('utf-8')
 					if not line.find("</channel>") == -1 and inChannels:
 						inChannels = False
@@ -601,7 +601,7 @@ class EPGImportFilterWorker:
 		prog = []
 		errors = False
 		# Find file encoding
-		for line in open(epgSourcePath,'r'):
+		for line in open(epgSourcePath, 'r'):
 			encoding = line.split('encoding="')[1].split('"')[0]
 			break
 		try:
@@ -645,7 +645,7 @@ class EPGImportFilterWorker:
 					titleName = ""
 					subtitleName = ""
 				elif inProgramme and cnt < 5 and endTime >= curTime and (not len(line) < 11 and line[:12] == '<title lang='):
-					titleName = time.ctime(startTime) + " " + line.split(">",1)[1].split("<",1)[0].strip()
+					titleName = time.ctime(startTime) + " " + line.split(">", 1)[1].split("<", 1)[0].strip()
 				#elif inProgramme and not line.find('<sub-title lang="') == -1:
 				#	subtitleName = line.split(">",1)[1].split("<",1)[0].strip()
 				
@@ -671,14 +671,14 @@ class EPGImportFilterWorker:
 	def compareNames(self, channelRef, deep):
 		# Compare by name specified channel
 		# Find the channel
-		k = [i for i,v in enumerate(self.channels) if v[cRef] == channelRef.lower()][0]
+		k = [i for i, v in enumerate(self.channels) if v[cRef] == channelRef.lower()][0]
 		if k < 0:
 			return
 				
 		d = self.channels[k]
 		# now compare with programmeNames and create matches
 		# remove previous entries in matches
-		p = [idx for idx,v in enumerate(self.matches) if v[mRef] == d[cRef] and v[mAutoLoad] == 0]
+		p = [idx for idx, v in enumerate(self.matches) if v[mRef] == d[cRef] and v[mAutoLoad] == 0]
 		if len(p) > 0:
 			p = sorted(p, reverse=True)
 			for v in p:				
@@ -699,14 +699,14 @@ class EPGImportFilterWorker:
 		if len(match) < count:
 			match = difflib.get_close_matches(d[cCompare], s, count, 0.10)
 
-		k = [idx for idx,v in enumerate(self.epgChannels) if v[eCompare] in match]
+		k = [idx for idx, v in enumerate(self.epgChannels) if v[eCompare] in match]
 		if len(k) > 0:
 			for o in k:
 				p = self.epgChannels[o][eProgram]
 				match_index = match.index(self.epgChannels[o][eCompare])
 				# ref, epgProgramName, sort, auto-entry
 				# First check if match exists and if yes update it													
-				s = [idx for idx,v in enumerate(self.matches) if v[mRef] == d[cRef] and v[mProgram] == p]
+				s = [idx for idx, v in enumerate(self.matches) if v[mRef] == d[cRef] and v[mProgram] == p]
 				if len(s) > 0:
 					self.matches[s[0]] = (d[cRef], p, match_index, self.matches[s[0]][mAutoLoad]) 
 				else:
@@ -722,7 +722,7 @@ class EPGImportFilterWorker:
 		
 		self.status = "Saved " + str(len(matchings)) + " entries.."
 		
-		settingsMgr.storeUserSettings(sources={"sources": self.epgSourcesChosen, "bouquets":self.bouquets, "matches": matches, "matchings": matchings})
+		settingsMgr.storeUserSettings(sources={"sources": self.epgSourcesChosen, "bouquets": self.bouquets, "matches": matches, "matchings": matchings})
 	
 	def loadAll(self):
 		cfg = settingsMgr.loadUserSettings()
@@ -733,7 +733,7 @@ class EPGImportFilterWorker:
 		self.epgSourcesChosen = cfg["sources"]
 
 		# Assign all matches to 2 - auto loaded from last save but not auto-generated
-		idx = [idx for idx,v in enumerate(self.matches) if v[mAutoLoad] == 0]
+		idx = [idx for idx, v in enumerate(self.matches) if v[mAutoLoad] == 0]
 		if len(idx) > 0:
 			for i in idx:
 				self.matches[i] = (self.matches[i][0], self.matches[i][1], self.matches[i][2], 2)

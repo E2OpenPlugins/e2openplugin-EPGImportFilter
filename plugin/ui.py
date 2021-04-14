@@ -149,7 +149,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 		
 		# posx, posy, width, height, font, flags, text, foreColor, selColor, backColor, selBackColor
 		colorN = None
-		colorS = (None,self.coloredColor)[colored]
+		colorS = (None, self.coloredColor)[colored]
 		if extra_color == 1:
 			colorN = self.color1
 			colorS = colorN
@@ -159,14 +159,14 @@ class ColoredList(HTMLComponent, GUIComponent):
 		elif colored:
 			colorN = self.coloredColor
 								
-		dx, dy, dw, dh = skin.parameters.get("EPGImportFilterListDescr",(30, 3, 500, 30))
+		dx, dy, dw, dh = skin.parameters.get("EPGImportFilterListDescr", (30, 3, 500, 30))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, dx, dy, dw, dh, 0, RT_HALIGN_LEFT, name, colorN, colorS))
 				
 		if selected == 2:
-			ix, iy, iw, ih = skin.parameters.get("EPGImportFilterListLockOff",(0, 0, 30, 30))
+			ix, iy, iw, ih = skin.parameters.get("EPGImportFilterListLockOff", (0, 0, 30, 30))
 			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, ix, iy, iw, ih, redxpng))
 		elif selected > 0:
-			ix, iy, iw, ih = skin.parameters.get("EPGImportFilterListLockOn",(0, 0, 30, 30))
+			ix, iy, iw, ih = skin.parameters.get("EPGImportFilterListLockOn", (0, 0, 30, 30))
 			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, ix, iy, iw, ih, selectionpng))
 		
 		return res
@@ -194,7 +194,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 	def getCurrent(self):
 		idx = self.instance.getCurrentIndex()
 		if idx < 0 or idx > len(self.list) - 1:
-			return ("","",False,False)
+			return ("", "", False, False)
 		
 		return self.list[idx]
 		
@@ -206,7 +206,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 		if len([v for v in self.list if v[2] == 0]) > 0:
 			oneUnselected = True
 			
-		for idx,i in enumerate(self.list):
+		for idx, i in enumerate(self.list):
 			item = self.list[idx]
 			if not (setValue is None):
 				ret = setValue
@@ -296,7 +296,7 @@ class EGPSelectEPGSources(Screen):
 		for i in epgWorker.epgSources:			
 			# display, description, selected, colored,
 			if not i[0] in [v[0] for v in self["list"].list]:
-				self["list"].list.append((i[eName], i[eFileName], (0,1)[i[eName] in epgWorker.epgSourcesChosen], False, 0))
+				self["list"].list.append((i[eName], i[eFileName], (0, 1)[i[eName] in epgWorker.epgSourcesChosen], False, 0))
 			
 		self.desktopSize = getDesktop(0).size()		
 		self["videoPicture"] = VideoWindow(decoder=0, fb_width=self.desktopSize.width(), fb_height=self.desktopSize.height())
@@ -313,7 +313,7 @@ class EGPSelectEPGSources(Screen):
 		self["key_green"] = Label(_("Select all"))
 	
 	def proceed(self):
-		self.close([(v[0],v[1],v[2]) for v in self["list"].list if v[2] > 0])
+		self.close([(v[0], v[1], v[2]) for v in self["list"].list if v[2] > 0])
 		
 	def cancel(self):
 		self.close([])	
@@ -759,7 +759,7 @@ class EGPMatchByName(Screen):
 				state = self["list2"].getCurrent()[2] # selected state
 				#self["list2"].clearSelections()
 				# find the matching for this channel
-				v = [i for i,v in enumerate(epgWorker.matchings) if v[mcRef] == ref]
+				v = [i for i, v in enumerate(epgWorker.matchings) if v[mcRef] == ref]
 				if state == 0 or state == 2:
 					if len(v) > 0:						
 						# ref, name, selected indicator (0 - disable, 1 - enable)
@@ -948,7 +948,7 @@ class EPGImportFilterScreen(Screen):
 		#selected = [ item[0][1] for item in self["list"].list if item[0][3]]
 		oneSelected = False
 		oneUnSelected = False
-		for idx,item in enumerate(self["list"].list):
+		for idx, item in enumerate(self["list"].list):
 			item = self["list"].list[idx][0]
 			if item[3]:
 				oneSelected = True
@@ -956,12 +956,12 @@ class EPGImportFilterScreen(Screen):
 				oneUnSelected = True			
 		# Select all or unselect all if all selected
 		if (oneSelected and not oneUnSelected) or (oneUnSelected and not oneSelected):
-			for idx,item in enumerate(self["list"].list):
+			for idx, item in enumerate(self["list"].list):
 				item = self["list"].list[idx][0]
 				self["list"].list[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
 			self["list"].setList(self["list"].list)			
 		if oneSelected and oneUnSelected:
-			for idx,item in enumerate(self["list"].list):
+			for idx, item in enumerate(self["list"].list):
 				item = self["list"].list[idx][0]
 				self["list"].list[idx] = SelectionEntryComponent(item[0], item[1], item[2], True)
 			self["list"].setList(self["list"].list)			
@@ -971,7 +971,7 @@ class EPGImportFilterScreen(Screen):
 	def save(self, callback):
 		if self.offerToSave:
 			self.callback = callback
-			self.session.openWithCallback(self.proceedSave, MessageBox, _("EPGImport Filter Plugin\nDo you want to save your changes?"),MessageBox.TYPE_YESNO, timeout=15, default=True)
+			self.session.openWithCallback(self.proceedSave, MessageBox, _("EPGImport Filter Plugin\nDo you want to save your changes?"), MessageBox.TYPE_YESNO, timeout=15, default=True)
 		else:
 			self.callback = callback
 			self.proceedSave(True)
@@ -981,7 +981,7 @@ class EPGImportFilterScreen(Screen):
 			self.offerToSave = False
 				
 			epgWorker.bouquets = []
-			for idx,item in enumerate(self["list"].list):
+			for idx, item in enumerate(self["list"].list):
 					item = self["list"].list[idx][0]
 					if item[3]:
 						epgWorker.bouquets.append(item[0])
