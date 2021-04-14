@@ -69,7 +69,7 @@ eName     = 0
 eFileName = 1
 eChosen   = 2
 
-def getBouquetList(bouquetNames = None):
+def getBouquetList(bouquetNames=None):
 	bouquets = [ ]
 	serviceHandler = eServiceCenter.getInstance()
 	bouquet_rootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
@@ -94,7 +94,7 @@ def getBouquetList(bouquetNames = None):
 	return None
 
 # Acds - Finds a first bouquet for the ref starting from the bouqet send as parameter
-def findBouquet(ref, bouquet = None):
+def findBouquet(ref, bouquet=None):
 	rf = ref.lower()
 	serviceHandler = eServiceCenter.getInstance()
 	bouquet_rootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
@@ -198,7 +198,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 		
 		return self.list[idx]
 		
-	def toggleAll(self, setValue = None):
+	def toggleAll(self, setValue=None):
 		oneSelected = False
 		oneUnselected = False
 		if len([v for v in self.list if v[2] > 0]) > 0:
@@ -223,7 +223,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 			
 		self.setList(self.list)
 							
-	def toggleSelection(self, setValue = None):
+	def toggleSelection(self, setValue=None):
 		idx = self.instance.getCurrentIndex()
 		if idx < 0 or idx > len(self.list)-1:
 			return
@@ -299,7 +299,7 @@ class EGPSelectEPGSources(Screen):
 				self["list"].list.append((i[eName], i[eFileName], (0,1)[i[eName] in epgWorker.epgSourcesChosen], False, 0))
 			
 		self.desktopSize = getDesktop(0).size()		
-		self["videoPicture"] = VideoWindow(decoder = 0, fb_width = self.desktopSize.width(), fb_height = self.desktopSize.height())
+		self["videoPicture"] = VideoWindow(decoder=0, fb_width=self.desktopSize.width(), fb_height=self.desktopSize.height())
 		
 		self["choiseActions"] = NumberActionMap(["DirectionActions", "EPGSelectActions", "NumberActions", "OkCancelActions", "ColorActions", "TimerEditActions"],
 			{
@@ -407,7 +407,7 @@ class EGPMatchByName(Screen):
 		self["list2"] = ColoredList()
 		self.desktopSize = getDesktop(0).size()		
 		#self["videoPicture"] = VideoWindow(decoder = 0, fb_width = 445, fb_height = 263)
-		self["videoPicture"] = VideoWindow(decoder = 0, fb_width = self.desktopSize.width(), fb_height = self.desktopSize.height())
+		self["videoPicture"] = VideoWindow(decoder=0, fb_width=self.desktopSize.width(), fb_height=self.desktopSize.height())
 		
 		self.curFocus = 1
 		self["actions"] = NumberActionMap(["DirectionActions", "EPGSelectActions", "NumberActions", "OkCancelActions", "ColorActions", "TimerEditActions"],
@@ -456,7 +456,7 @@ class EGPMatchByName(Screen):
 			
 		self.onLayoutFinish.append(self.onLoad)			
 				
-	def updateStatus(self, done = None):
+	def updateStatus(self, done=None):
 	
 		#if epgWorker.download_active > 0:
 		#	epgWorker.download_active = epgWorker.download_active + 1
@@ -545,7 +545,7 @@ class EGPMatchByName(Screen):
 		ref = self["list1"].getCurrent()[1]
 		del self["list2"].list[:]
 		c = [v for v in epgWorker.matches if v[mRef] == self["list1"].list[s][1]]
-		c = sorted(c, key=itemgetter(2), reverse = False)
+		c = sorted(c, key=itemgetter(2), reverse=False)
 		for x in c:
 			# (name, field1, selected, colored, extra_color
 			# find if matching exist
@@ -791,7 +791,7 @@ class EGPMatchByName(Screen):
 	def save(self, callback):
 		if self.offerToSave:
 			self.callback = callback
-			self.session.openWithCallback(self.proceedSave, MessageBox, _("EPGImport Filter Plugin\nDo you want to save your changes?"), MessageBox.TYPE_YESNO, timeout = 15, default = True)
+			self.session.openWithCallback(self.proceedSave, MessageBox, _("EPGImport Filter Plugin\nDo you want to save your changes?"), MessageBox.TYPE_YESNO, timeout=15, default=True)
 		else:
 			self.callback = callback
 			self.proceedSave(True)
@@ -815,7 +815,7 @@ class EGPMatchByName(Screen):
 			return
 			
 		if not os.path.isfile("/etc/epgimport/rytec.sources.xml"):
-			self.session.open(MessageBox, _("EPGImport is not installed.."), MessageBox.TYPE_ERROR, timeout = 1000, close_on_any_key = True)			
+			self.session.open(MessageBox, _("EPGImport is not installed.."), MessageBox.TYPE_ERROR, timeout=1000, close_on_any_key=True)			
 			return
 					
 		if self.offerToSave:
@@ -823,13 +823,13 @@ class EGPMatchByName(Screen):
 		self.save(self.proceedInstall)
 
 		if len(epgWorker.bouquets) == 0:
-			self.session.open(MessageBox, _("You must choose at least one bouquet!"), MessageBox.TYPE_ERROR, timeout = 1000, close_on_any_key = True)						
+			self.session.open(MessageBox, _("You must choose at least one bouquet!"), MessageBox.TYPE_ERROR, timeout=1000, close_on_any_key=True)						
 			return
 			
 		#EPGConfig.storeUserSettings(sources=self.bouquets)		
 
 	def proceedInstall(self):		
-		self.session.openWithCallback(self.doFilterCallback, MessageBox, _("EPGImport Filter Plugin\nChannels filtering will start\nThis may take a few minutes\nIs this ok?"), MessageBox.TYPE_YESNO, timeout = 15, default = True)	
+		self.session.openWithCallback(self.doFilterCallback, MessageBox, _("EPGImport Filter Plugin\nChannels filtering will start\nThis may take a few minutes\nIs this ok?"), MessageBox.TYPE_YESNO, timeout=15, default=True)	
 		
 	def cancel(self):
 		self.updateTimer.stop()	
@@ -907,7 +907,7 @@ class EPGImportFilterScreen(Screen):
 		# remove channel data so it's reloaded on next advanced / install action
 		self.offerToSave = True
 			
-	def updateStatus(self, done = None):
+	def updateStatus(self, done=None):
 		self["statusbar"].setText(epgWorker.status)
 		if epgWorker.active:
 			if not (done is None):
@@ -928,7 +928,7 @@ class EPGImportFilterScreen(Screen):
 		self.session.openWithCallback(None, EGPMatchByName)	
 		
 	def uninstall(self):
-		self.session.openWithCallback(self.proceedUninstall, MessageBox, _("EPGImport Filter Plugin\nDo you want to remove EPGImport channel filtering?"), MessageBox.TYPE_YESNO, timeout = 15, default = True)
+		self.session.openWithCallback(self.proceedUninstall, MessageBox, _("EPGImport Filter Plugin\nDo you want to remove EPGImport channel filtering?"), MessageBox.TYPE_YESNO, timeout=15, default=True)
 	
 	def proceedUninstall(self, confirmed):
 		if confirmed:
@@ -938,7 +938,7 @@ class EPGImportFilterScreen(Screen):
 				os.remove("/etc/epgimport/filteredrytec.sources.xml")
 			except:
 				pass
-			self.session.open(MessageBox, _("EPGImport Filter Service removed.."), MessageBox.TYPE_INFO, timeout = 1000, close_on_any_key = True)
+			self.session.open(MessageBox, _("EPGImport Filter Service removed.."), MessageBox.TYPE_INFO, timeout=1000, close_on_any_key=True)
 			self.updateTimer.stop()	
 			self.updateTimer.stop()	
 			epgWorker.updateStatus = None
@@ -971,7 +971,7 @@ class EPGImportFilterScreen(Screen):
 	def save(self, callback):
 		if self.offerToSave:
 			self.callback = callback
-			self.session.openWithCallback(self.proceedSave, MessageBox, _("EPGImport Filter Plugin\nDo you want to save your changes?"),MessageBox.TYPE_YESNO, timeout = 15, default = True)
+			self.session.openWithCallback(self.proceedSave, MessageBox, _("EPGImport Filter Plugin\nDo you want to save your changes?"),MessageBox.TYPE_YESNO, timeout=15, default=True)
 		else:
 			self.callback = callback
 			self.proceedSave(True)
@@ -1004,7 +1004,7 @@ class EPGImportFilterScreen(Screen):
 			del epgWorker.channels[:]
 					
 		if not os.path.isfile("/etc/epgimport/rytec.sources.xml"):
-			self.session.open(MessageBox, _("EPGImport is not installed.."), MessageBox.TYPE_ERROR, timeout = 1000, close_on_any_key = True)			
+			self.session.open(MessageBox, _("EPGImport is not installed.."), MessageBox.TYPE_ERROR, timeout=1000, close_on_any_key=True)			
 			return
 					
 		if self.offerToSave:
@@ -1012,11 +1012,11 @@ class EPGImportFilterScreen(Screen):
 		self.save(None)
 
 		if len(epgWorker.bouquets) == 0:
-			self.session.open(MessageBox, _("You must choose at least one bouquet!"), MessageBox.TYPE_ERROR, timeout = 1000, close_on_any_key = True)						
+			self.session.open(MessageBox, _("You must choose at least one bouquet!"), MessageBox.TYPE_ERROR, timeout=1000, close_on_any_key=True)						
 			return
 			
 		#EPGConfig.storeUserSettings(sources=self.bouquets)		
-		self.session.openWithCallback(self.doFilterCallback, MessageBox, _("EPGImport Filter Plugin\nChannels filtering will start\nThis may take a few minutes\nIs this ok?"), MessageBox.TYPE_YESNO, timeout = 15, default = True)
+		self.session.openWithCallback(self.doFilterCallback, MessageBox, _("EPGImport Filter Plugin\nChannels filtering will start\nThis may take a few minutes\nIs this ok?"), MessageBox.TYPE_YESNO, timeout=15, default=True)
 		
 	def doFilterCallback(self, confirmed):
 		if not confirmed:
@@ -1027,7 +1027,7 @@ class EPGImportFilterScreen(Screen):
 			epgWorker.updateStatus = self.updateStatus
 			epgWorker.createFilteredChannelFile()
 		except Exception, e:
-			self.session.open(MessageBox, _("EPGImport Filter Plugin\nFailed to start:\n") + str(e), MessageBox.TYPE_ERROR, timeout = 15, close_on_any_key = True)
+			self.session.open(MessageBox, _("EPGImport Filter Plugin\nFailed to start:\n") + str(e), MessageBox.TYPE_ERROR, timeout=15, close_on_any_key=True)
 
 		self.updateStatus()
 					

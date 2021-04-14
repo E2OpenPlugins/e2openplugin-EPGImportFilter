@@ -195,7 +195,7 @@ class EPGImportFilterWorker:
 		else:
 			return ref
 		
-	def getChannelList(self, bouquetNames = None):
+	def getChannelList(self, bouquetNames=None):
 		channels = [ ]
 		serviceHandler = eServiceCenter.getInstance()
 		bouquet_rootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
@@ -257,7 +257,7 @@ class EPGImportFilterWorker:
 		text_file.close()
 		return None
 		
-	def createFilteredChannelFile(self, onlyLoad = False):
+	def createFilteredChannelFile(self, onlyLoad=False):
 		self.status = "Downloading channel file.."
 		self.active = True
 		self.done = 0
@@ -337,7 +337,7 @@ class EPGImportFilterWorker:
 		downloadPage(sourcefile, filename).addCallbacks(afterDownload, vdownloadFail)
 		return filename
 		
-	def proceedCreateFilteredChannelFileThread(self, result, filename, deleteFile = False):
+	def proceedCreateFilteredChannelFileThread(self, result, filename, deleteFile=False):
 		# proceed with installation after downloading the channel file
 		self.done = 0
 		if not (self.updateStatus is None):
@@ -560,7 +560,7 @@ class EPGImportFilterWorker:
 		else:
 			proceedEpgLoadThread(result, self.filename, False)
 		
-	def proceedEpgLoadThread(self, result, filename, deleteFile = False):
+	def proceedEpgLoadThread(self, result, filename, deleteFile=False):
 		# If the file is gz extract it
 		# If the file is "xz" extract it
 		self.done = 0
@@ -680,7 +680,7 @@ class EPGImportFilterWorker:
 		# remove previous entries in matches
 		p = [idx for idx,v in enumerate(self.matches) if v[mRef] == d[cRef] and v[mAutoLoad] == 0]
 		if len(p) > 0:
-			p = sorted(p, reverse = True)
+			p = sorted(p, reverse=True)
 			for v in p:				
 				del self.matches[v]
 									
@@ -722,7 +722,7 @@ class EPGImportFilterWorker:
 		
 		self.status = "Saved " + str(len(matchings)) + " entries.."
 		
-		settingsMgr.storeUserSettings(sources = {"sources" : self.epgSourcesChosen, "bouquets":self.bouquets, "matches": matches, "matchings": matchings})
+		settingsMgr.storeUserSettings(sources={"sources" : self.epgSourcesChosen, "bouquets":self.bouquets, "matches": matches, "matchings": matchings})
 	
 	def loadAll(self):
 		cfg = settingsMgr.loadUserSettings()

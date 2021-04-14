@@ -22,6 +22,6 @@ def Plugins(**kwargs):
 	return PluginDescriptor(
 		name="EPGImport Filter",
 		description="Filter EPGImport data for selected bouquets",
-		where = PluginDescriptor.WHERE_PLUGINMENU,
+		where=PluginDescriptor.WHERE_PLUGINMENU,
 		icon="plugin.png",
 		fnc=main)
