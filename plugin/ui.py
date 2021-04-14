@@ -48,26 +48,26 @@ except:
 
 # structures
 # matches[]
-mRef      = 0
-mProgram  = 1
-mSort     = 2
+mRef = 0
+mProgram = 1
+mSort = 2
 mAutoLoad = 3
 # matchhings[]
-mcRef     = 0
+mcRef = 0
 mcProgram = 1
-mcState   = 2
+mcState = 2
 # channels[]t4t
-cRef      = 0
-cName     = 1
-cCompare  = 2
+cRef = 0
+cName = 1
+cCompare = 2
 cIndxXMLChannel = 3
 # epgChannels[]
-eProgram  = 0
-eCompare  = 1
+eProgram = 0
+eCompare = 1
 # epgSources[]
-eName     = 0
+eName = 0
 eFileName = 1
-eChosen   = 2
+eChosen = 2
 
 def getBouquetList(bouquetNames=None):
 	bouquets = []
@@ -193,7 +193,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 
 	def getCurrent(self):
 		idx = self.instance.getCurrentIndex()
-		if idx < 0 or idx > len(self.list)-1:
+		if idx < 0 or idx > len(self.list) - 1:
 			return ("","",False,False)
 		
 		return self.list[idx]
@@ -225,7 +225,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 							
 	def toggleSelection(self, setValue=None):
 		idx = self.instance.getCurrentIndex()
-		if idx < 0 or idx > len(self.list)-1:
+		if idx < 0 or idx > len(self.list) - 1:
 			return
 		
 		item = self.list[idx]
@@ -244,7 +244,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 
 	def setCurrentToColored(self, setValue):
 		idx = self.instance.getCurrentIndex()
-		if idx < 0 or idx > len(self.list)-1:
+		if idx < 0 or idx > len(self.list) - 1:
 			return
 		
 		item = self.list[idx]
@@ -593,8 +593,8 @@ class EGPMatchByName(Screen):
 			self["text2"].setText("")
 			return
 			
-		sRef		= self["list1"].list[s][1]
-		begin       = int(time.mktime(time.localtime()))
+		sRef = self["list1"].list[s][1]
+		begin = int(time.mktime(time.localtime()))
 		#duration	= time.localtime(20000)
 		
 		nextEvent = self.epgcache.startTimeQuery(eServiceReference(sRef), begin)
@@ -754,7 +754,7 @@ class EGPMatchByName(Screen):
 			self.right()
 		else:
 			if len(self["list2"].list) > 0:
-				ref   = self["list1"].getCurrent()[1]
+				ref = self["list1"].getCurrent()[1]
 				mname = self["list2"].getCurrent()[0]
 				state = self["list2"].getCurrent()[2] # selected state
 				#self["list2"].clearSelections()
