@@ -6,6 +6,6 @@ setup(name='enigma2-plugin-extensions-epgimportfilter',
        description='EPGImportFilter',
        package_dir={pkg: 'plugin'},
        packages=[pkg],
-       package_data={pkg: 
+       package_data={pkg:
            ['plugin.png']}
       )

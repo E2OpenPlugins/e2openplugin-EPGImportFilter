@@ -14,12 +14,12 @@ def main(session, **kwargs):
 	session.openWithCallback(
 		doneConfiguring,
 		ui.EPGImportFilterScreen
-	)	
-	
+	)
+
 
 def doneConfiguring(session, retval):
     "user has closed configuration, check new values...."
-	
+
 
 def Plugins(**kwargs):
 	return PluginDescriptor(
