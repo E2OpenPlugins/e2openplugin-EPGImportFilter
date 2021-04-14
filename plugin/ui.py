@@ -118,7 +118,7 @@ def findBouquet(ref, bouquet = None):
 										break
 									if not (a.flags & eServiceReference.isMarker):
 										if not (a.toCompareString().lower().find(rf) == -1):
-											return s;
+											return s
 	return None
 
 #selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/selectioncross.png"))
@@ -193,12 +193,14 @@ class ColoredList(HTMLComponent, GUIComponent):
 
 	def getCurrent(self):
 		idx = self.instance.getCurrentIndex()
-		if idx < 0 or idx > len(self.list)-1: return ("","",False,False)
+		if idx < 0 or idx > len(self.list)-1:
+			return ("","",False,False)
 		
 		return self.list[idx]
 		
 	def toggleAll(self, setValue = None):
-		oneSelected = False; oneUnselected = False
+		oneSelected = False
+		oneUnselected = False
 		if len([v for v in self.list if v[2] > 0]) > 0:
 			oneSelected = True
 		if len([v for v in self.list if v[2] == 0]) > 0:
@@ -223,7 +225,8 @@ class ColoredList(HTMLComponent, GUIComponent):
 							
 	def toggleSelection(self, setValue = None):
 		idx = self.instance.getCurrentIndex()
-		if idx < 0 or idx > len(self.list)-1: return
+		if idx < 0 or idx > len(self.list)-1:
+			return
 		
 		item = self.list[idx]
 		if not (setValue is None):
@@ -241,7 +244,8 @@ class ColoredList(HTMLComponent, GUIComponent):
 
 	def setCurrentToColored(self, setValue):
 		idx = self.instance.getCurrentIndex()
-		if idx < 0 or idx > len(self.list)-1: return
+		if idx < 0 or idx > len(self.list)-1:
+			return
 		
 		item = self.list[idx]
 		self.list[idx] = (item[0], item[1], item[2], setValue, item[4])
@@ -570,7 +574,8 @@ class EGPMatchByName(Screen):
 				try:
 					#c = [v for v in epgWorker.epgProgramme[self["list2"].list[s][0]]]
 					c = epgWorker.epgProgramme[self["list2"].list[s][0]]
-				except: c = []
+				except:
+					c = []
 				if len(c) > 0:
 					t = ""
 					for x in c:				
@@ -708,7 +713,8 @@ class EGPMatchByName(Screen):
 			self.refreshChannels()
 		else:
 			s = self["list1"].instance.getCurrentIndex()
-			if s < 0 or len(self["list1"].list) <= s or len(self["list1"].list[s]) == 0: return
+			if s < 0 or len(self["list1"].list) <= s or len(self["list1"].list[s]) == 0:
+				return
 
 			# load the matches
 			#epgWorker.compareNames(self["list1"].list[s][0][1], number)
@@ -717,7 +723,8 @@ class EGPMatchByName(Screen):
 	
 	def right(self):	
 		s = self["list1"].instance.getCurrentIndex()
-		if s < 0 or len(self["list1"].list) <= s or len(self["list1"].list[s]) == 0: return
+		if s < 0 or len(self["list1"].list) <= s or len(self["list1"].list[s]) == 0:
+			return
 
 		if len(self["list2"].list) == 0:		
 			# load the matches
@@ -731,7 +738,8 @@ class EGPMatchByName(Screen):
 	def zap(self):
 		if self.curFocus == 1:
 			s = self["list1"].instance.getCurrentIndex()
-			if s < 0: return		
+			if s < 0:
+				return		
 
 			if len(self["list1"].list) > s:
 				# Find the service
@@ -810,7 +818,8 @@ class EGPMatchByName(Screen):
 			self.session.open(MessageBox, _("EPGImport is not installed.."), MessageBox.TYPE_ERROR, timeout = 1000, close_on_any_key = True)			
 			return
 					
-		if self.offerToSave: self.offerToSave = False
+		if self.offerToSave:
+			self.offerToSave = False
 		self.save(self.proceedInstall)
 
 		if len(epgWorker.bouquets) == 0:
@@ -927,7 +936,8 @@ class EPGImportFilterScreen(Screen):
 			try:
 				os.remove("/etc/epgimport/filteredchannels.xml")
 				os.remove("/etc/epgimport/filteredrytec.sources.xml")
-			except: pass
+			except:
+				pass
 			self.session.open(MessageBox, _("EPGImport Filter Service removed.."), MessageBox.TYPE_INFO, timeout = 1000, close_on_any_key = True)
 			self.updateTimer.stop()	
 			self.updateTimer.stop()	
@@ -997,7 +1007,8 @@ class EPGImportFilterScreen(Screen):
 			self.session.open(MessageBox, _("EPGImport is not installed.."), MessageBox.TYPE_ERROR, timeout = 1000, close_on_any_key = True)			
 			return
 					
-		if self.offerToSave: self.offerToSave = False
+		if self.offerToSave:
+			self.offerToSave = False
 		self.save(None)
 
 		if len(epgWorker.bouquets) == 0:

@@ -70,8 +70,10 @@ class SettingsMgr:
 					try:
 						#self.sources.update(pickle.load(fp))
 						sources.update(pickle.load(fp))
-					except: pass
-		except: pass	
+					except:
+						pass
+		except:
+			pass	
 		return sources		
 		
 	def storeUserSettings(self, sources):
@@ -81,7 +83,8 @@ class SettingsMgr:
 					m = sources[i]
 					container = {i: m}
 					pickle.dump(container, fp, pickle.HIGHEST_PROTOCOL)
-				except: pass
+				except:
+					pass
 					
 settingsMgr = SettingsMgr(["sources", "bouquets", "matches", "matchings"])
 		
@@ -184,7 +187,8 @@ class EPGImportFilterWorker:
 			if len(l) > 0 and l[0] == "0":
 				try:
 					l = int(l)
-				except: return ref
+				except:
+					return ref
 				return r[0] +":"+ r[1] +":"+ r[2] +":"+ r[3] +":"+ r[4] +":"+ str(l) +":"+ r[6]
 			else:
 				return ref
@@ -196,7 +200,8 @@ class EPGImportFilterWorker:
 		serviceHandler = eServiceCenter.getInstance()
 		bouquet_rootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
 		bouquet_root = eServiceReference(bouquet_rootstr)
-		r = 0; idx = 0
+		r = 0
+		idx = 0
 		if config.usage.multibouquet.value:
 			list = serviceHandler.list(bouquet_root)
 			if list:
@@ -212,7 +217,8 @@ class EPGImportFilterWorker:
 								if clist:
 									while True:
 										a = clist.getNext()
-										if not a.valid(): break
+										if not a.valid():
+											break
 										if not (a.flags & eServiceReference.isMarker):
 											#if not (a.toCompareString().lower() in (v[0] for v in channels)):
 											i = serviceHandler.info(a)
@@ -225,7 +231,8 @@ class EPGImportFilterWorker:
 											r += 1
 											self.done += 1
 											if r >= 100:			
-												if not (self.updateStatus is None): self.updateStatus(self.done)
+												if not (self.updateStatus is None):
+													self.updateStatus(self.done)
 												r = 0
 				# remove duplicate channels
 				c = sorted(channels, key=itemgetter(0))
@@ -255,14 +262,18 @@ class EPGImportFilterWorker:
 		self.active = True
 		self.done = 0
 		# Parse Rytec_sources.xml
-		inChannels = False; inSources = False; sourceName = ""; watch = True
+		inChannels = False
+		inSources = False
+		sourceName = ""
+		watch = True
 		if self.download_error:
 			watch = False
 		if self.channelSource == "" or self.download_error:
 			for line in open('/etc/epgimport/rytec.sources.xml','r'):				
 					try:
 						line = line.encode('utf-8')
-					except Exception, e: pass
+					except Exception, e:
+						pass
 					if not line.find("</channel>") == -1 and inChannels:
 						inChannels = False
 					elif not line.find("channel name=") == -1 and (not line.find("rytec.channels.xml.gz") == -1 or not line.find("rytec.channels.xml.xz") == -1): # 06.08.18 - xz added
@@ -329,7 +340,8 @@ class EPGImportFilterWorker:
 	def proceedCreateFilteredChannelFileThread(self, result, filename, deleteFile = False):
 		# proceed with installation after downloading the channel file
 		self.done = 0
-		if not (self.updateStatus is None): self.updateStatus(self.done)
+		if not (self.updateStatus is None):
+			self.updateStatus(self.done)
 		self.doneStr = ""
 		self.status = "Reading channels.."
 
@@ -353,34 +365,46 @@ class EPGImportFilterWorker:
 		
 		xmlChannels = []
 		# structure
-		xRef = 0; xName = 1; xCompare = 2; xIdxChannel = 3; xId = 4
+		xRef = 0
+		xName = 1
+		xCompare = 2
+		xIdxChannel = 3
+		xId = 4
 		# First load all channels from .xml file
 		cnt = -1
 		self.status = "Parsing XML channels.."
 		self.done = 0
 		self.doneStr = "%"
-		if not (self.updateStatus is None): self.updateStatus(self.done)
+		if not (self.updateStatus is None):
+			self.updateStatus(self.done)
 		fileSize = os.path.getsize(channelPath)
-		fileDone = 0; r = 0
+		fileDone = 0
+		r = 0
 		try:
 			# Channel line convert from latin-1 to utf-8
 			for line in codecs.open(channelPath, "r", "latin-1"): 
 			#for line in codecs.open("/etc/epgimport/arytec.channels.xml", "r", "latin-1"): 
 				line = line.encode('utf-8').strip()
-				fileDone += len(line); r += 1
+				fileDone += len(line)
+				r += 1
 				if r >= 100:
 					self.done = round(float(fileDone) / fileSize * 100)
-					if not (self.updateStatus is None): self.updateStatus(self.done)
+					if not (self.updateStatus is None):
+						self.updateStatus(self.done)
 					r = 0
 
 				# 06.08.18 - reverse comment
 				#if (not len(line) < 9 and line[:11] == "<channel id"):
 				if not (line.find("<channel id") == -1):
-					try: name = line.split('"',1)[1].split('"',1)[0]
-					except: name = ""
+					try:
+						name = line.split('"',1)[1].split('"',1)[0]
+					except:
+						name = ""
 					compareName = self.getCompareName(name)
-					try: ref = line.split('">')[1].split("</channel")[0].strip().lower()
-					except: ref = ""
+					try:
+						ref = line.split('">')[1].split("</channel")[0].strip().lower()
+					except:
+						ref = ""
 					# reference, name, compareName, channel mapped idx, id
 					cnt += 1
 					xmlChannels.append([ref, name, compareName, -1, cnt])
@@ -397,18 +421,25 @@ class EPGImportFilterWorker:
 		cntFound = 0
 		self.status = "Comparing channels.."
 		self.done = 0
-		if not (self.updateStatus is None): self.updateStatus(self.done)
-		l = len(self.channels); cnt = 0; r = 0
+		if not (self.updateStatus is None):
+			self.updateStatus(self.done)
+		l = len(self.channels)
+		cnt = 0
+		r = 0
 		
 		for x in range(0, l):
-			cnt += 1; r += 1
+			cnt += 1
+			r += 1
 			if r >= 100:
 				self.done = round(float(cnt) / l * 100)
-				if not self.updateStatus is None: self.updateStatus(self.done)
+				if not self.updateStatus is None:
+					self.updateStatus(self.done)
 				r = 0
 				
-			try: indx = s.index(self.getCompareRef(self.channels[x][cRef]))
-			except: indx = -1
+			try:
+				indx = s.index(self.getCompareRef(self.channels[x][cRef]))
+			except:
+				indx = -1
 			if indx >= 0:
 				self.channels[x][cIndxXMLChannel] = indx
 				xmlChannels[indx][xIdxChannel] = x
@@ -425,8 +456,12 @@ class EPGImportFilterWorker:
 			#text_file = open("/etc/epgimport/filteredchannels.xml", "w")				
 			try:
 				self.status = "Creating channels file.."
-				self.done = 0; fileDone = 0; cnt = -1; r = 0
-				if not (self.updateStatus is None): self.updateStatus(self.done)
+				self.done = 0
+				fileDone = 0
+				cnt = -1
+				r = 0
+				if not (self.updateStatus is None):
+					self.updateStatus(self.done)
 
 				text_file = open("/etc/epgimport/filteredchannels.xml", "w")				
 				#text_file = codecs.open("/etc/epgimport/filteredchannels.xml", "w", "latin-1")
@@ -438,10 +473,12 @@ class EPGImportFilterWorker:
 				v = [v for v in self.matchings if v[mcState] > 0]
 				fileSize = len(v)
 				for i in v:
-						fileDone += 1; r += 1
+						fileDone += 1
+						r += 1
 						if r >= 100:
 							self.done = round(float(fileDone) / fileSize * 100) 
-							if not (self.updateStatus is None): self.updateStatus(self.done)
+							if not (self.updateStatus is None):
+								self.updateStatus(self.done)
 							r = 0
 							
 						line = '<channel id="' + i[mcProgram] + '">' + i[mcRef] + '</channel> <!-- -->\n'
@@ -506,7 +543,8 @@ class EPGImportFilterWorker:
 			self.status = "Downloading epg data.."
 			self.active = True
 			self.done = 0
-			if not (self.updateStatus is None): self.updateStatus(self.done)
+			if not (self.updateStatus is None):
+				self.updateStatus(self.done)
 			self.downloadFile(self.epgLoadSources[self.epgLoadCounter][1], self.proceedEpgLoad, self.downloadSimpleFail)	
 		else:
 			self.active = False	
@@ -528,7 +566,8 @@ class EPGImportFilterWorker:
 		self.done = 0
 		self.status = "Parsing epg " + self.epgLoadSources[self.epgLoadCounter][0]
 		self.doneStr = "%"		
-		if not (self.updateStatus is None): self.updateStatus(self.done)
+		if not (self.updateStatus is None):
+			self.updateStatus(self.done)
 
 		epgSourcePath = filename
 		if filename.endswith('.gz'):
@@ -541,16 +580,26 @@ class EPGImportFilterWorker:
 			epgSourcePath = filename.split(".xz")[0]		
 			
 		# Parse epg.xml file
-		inProgramme = False; programName = ""; cnt = 0
-		lastProgramName = ""; titleName = ""; subtitleName = ""; startTime = 0; endTime = 0
-		fileSize = os.path.getsize(epgSourcePath); fileDone = 0; r = 0		
+		inProgramme = False
+		programName = ""
+		cnt = 0
+		lastProgramName = ""
+		titleName = ""
+		subtitleName = ""
+		startTime = 0
+		endTime = 0
+		fileSize = os.path.getsize(epgSourcePath)
+		fileDone = 0
+		r = 0		
 		self.done = 0
-		if not (self.updateStatus is None): self.updateStatus(self.done)
+		if not (self.updateStatus is None):
+			self.updateStatus(self.done)
 		
 		#text_file = open("/etc/epgimport/what.xml", "w")				
 		#text_file.truncate()		
 		max_entries = 5
-		prog = []; errors = False
+		prog = []
+		errors = False
 		# Find file encoding
 		for line in open(epgSourcePath,'r'):
 			encoding = line.split('encoding="')[1].split('"')[0]
@@ -559,10 +608,12 @@ class EPGImportFilterWorker:
 			curTime = time.time()
 			for line in codecs.open(epgSourcePath, "r", encoding): 
 			#for line in open(epgSourcePath,'r'):					
-				fileDone += len(line); r += 1
+				fileDone += len(line)
+				r += 1
 				if r >= 100:
 					self.done = round(float(fileDone) / fileSize * 100)
-					if not (self.updateStatus is None): self.updateStatus(self.done)
+					if not (self.updateStatus is None):
+						self.updateStatus(self.done)
 					r = 0
 						
 				line = line.strip().encode('utf-8')
@@ -591,7 +642,8 @@ class EPGImportFilterWorker:
 					if cnt < 5 and endTime >= curTime:
 						startTime = timeMgr.get_time_utc(elem[1])				
 					lastProgramName = programName
-					titleName = ""; subtitleName = ""
+					titleName = ""
+					subtitleName = ""
 				elif inProgramme and cnt < 5 and endTime >= curTime and (not len(line) < 11 and line[:12] == '<title lang='):
 					titleName = time.ctime(startTime) + " " + line.split(">",1)[1].split("<",1)[0].strip()
 				#elif inProgramme and not line.find('<sub-title lang="') == -1:
@@ -620,7 +672,8 @@ class EPGImportFilterWorker:
 		# Compare by name specified channel
 		# Find the channel
 		k = [i for i,v in enumerate(self.channels) if v[cRef] == channelRef.lower()][0]
-		if k < 0: return
+		if k < 0:
+			return
 				
 		d = self.channels[k]
 		# now compare with programmeNames and create matches
