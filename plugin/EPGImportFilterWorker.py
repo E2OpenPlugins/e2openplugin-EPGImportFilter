@@ -32,6 +32,7 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_CURRENT
 
 import cPickle as pickle
 
+
 def bigStorage(minFree, default, *candidates):
 	try:
             diskstat = os.statvfs(default)
@@ -54,6 +55,7 @@ def bigStorage(minFree, default, *candidates):
                     pass
     	return default
 		
+
 class SettingsMgr:
 	def __init__(self, sections):
 		self.settingsFile = resolveFilename(SCOPE_CURRENT_PLUGIN, "Extensions/EPGImportFilter/settings.conf")
@@ -86,8 +88,10 @@ class SettingsMgr:
 				except:
 					pass
 					
+
 settingsMgr = SettingsMgr(["sources", "bouquets", "matches", "matchings"])
 		
+
 class TimeMgr: 
 
 	def __init__(self):
@@ -117,6 +121,7 @@ class TimeMgr:
 			print "[XMLTVConverter] get_time_utc error:", e
 			return 0
 		
+
 timeMgr = TimeMgr()
 
 # structures
@@ -141,6 +146,7 @@ eCompare = 1
 eName = 0
 eFileName = 1
 		
+
 class EPGImportFilterWorker: 
 	# Worker
 	def __init__(self):

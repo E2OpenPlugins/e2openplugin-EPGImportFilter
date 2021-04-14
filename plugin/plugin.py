@@ -7,6 +7,7 @@ import enigma
 
 from Plugins.Plugin import PluginDescriptor
 
+
 def main(session, **kwargs):
 	import ui
 	#session.open(ui.EPGImportFilterScreen)
@@ -15,9 +16,11 @@ def main(session, **kwargs):
 		ui.EPGImportFilterScreen
 	)	
 	
+
 def doneConfiguring(session, retval):
     "user has closed configuration, check new values...."
 	
+
 def Plugins(**kwargs):
 	return PluginDescriptor(
 		name="EPGImport Filter",

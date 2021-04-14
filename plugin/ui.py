@@ -69,6 +69,7 @@ eName = 0
 eFileName = 1
 eChosen = 2
 
+
 def getBouquetList(bouquetNames=None):
 	bouquets = []
 	serviceHandler = eServiceCenter.getInstance()
@@ -94,6 +95,8 @@ def getBouquetList(bouquetNames=None):
 	return None
 
 # Acds - Finds a first bouquet for the ref starting from the bouqet send as parameter
+
+
 def findBouquet(ref, bouquet=None):
 	rf = ref.lower()
 	serviceHandler = eServiceCenter.getInstance()
@@ -121,11 +124,13 @@ def findBouquet(ref, bouquet=None):
 											return s
 	return None
 
+
 #selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/selectioncross.png"))
 selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/lock_on.png"))
 redxpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/icons/lock_error.png"))
 #redxpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_PLUGIN, "Extensions/EPGImportFilter/disabled.png")) 
 	
+
 class ColoredList(HTMLComponent, GUIComponent):
 	def __init__(self):
 		GUIComponent.__init__(self)
@@ -267,6 +272,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 		if self.instance is not None and len(self.list) > 0:
 			self.instance.moveSelection(self.instance.pageDown)
 
+
 class EGPSelectEPGSources(Screen):
 	#skin = """<screen name="EPGSelectEPGSourcesScreen" position="center,42" zPosition="2" size="1230,660" title="Select EPG sources" >
 		# <ePixmap pixmap="skin_default/div-h.png" position="0,535" zPosition="2" size="1260,2" />
@@ -318,6 +324,7 @@ class EGPSelectEPGSources(Screen):
 	def cancel(self):
 		self.close([])	
 						
+
 class EGPMatchByName(Screen):
 #			<ePixmap pixmap="div-h.png" position="0,895" zPosition="2" size="1870,2" />
 #			<ePixmap pixmap="div-h.png" position="410,500" zPosition="2" size="1460,2" />
@@ -373,6 +380,7 @@ class EGPMatchByName(Screen):
 			</widget>
 			<widget name="videoPicture" position="820,20" size="395,215" zPosition="1" backgroundColor="transparent" />
 		</screen>"""		
+
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
@@ -489,7 +497,6 @@ class EGPMatchByName(Screen):
 		if self.waitForEpgWorker == 2 and not epgWorker.active:
 			self.waitForEpgWorker = 0
 			self.refreshMatches
-			
 			
 	def onLoad(self):
 		self.refreshChannels()
@@ -777,7 +784,6 @@ class EGPMatchByName(Screen):
 						del epgWorker.matchings[v[0]]
 						self["list1"].toggleSelection(0)
 						
-						
 				self.refreshMatches()
 				
 			self.left()
@@ -842,6 +848,7 @@ class EGPMatchByName(Screen):
 	def proceedCancel(self):
 		self.close(self.session, False)
 					
+
 class EPGImportFilterScreen(Screen):
 	#skin = """<screen name="EPGImportFilterScreen" position="center,center" zPosition="2" size="700,610" title="EPGImport Filter" >
 	# <ePixmap pixmap="skin_default/div-h.png" position="0,510" zPosition="2" size="700,2" />
