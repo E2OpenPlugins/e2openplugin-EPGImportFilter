@@ -70,7 +70,7 @@ eFileName = 1
 eChosen   = 2
 
 def getBouquetList(bouquetNames=None):
-	bouquets = [ ]
+	bouquets = []
 	serviceHandler = eServiceCenter.getInstance()
 	bouquet_rootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
 	bouquet_root = eServiceReference(bouquet_rootstr)
@@ -145,7 +145,7 @@ class ColoredList(HTMLComponent, GUIComponent):
 
 	def buildEntry(self, name, field1, selected, colored, extra_color):
 		width = self.l.getItemSize().width()
-		res = [ None ]
+		res = [None]
 		
 		# posx, posy, width, height, font, flags, text, foreColor, selColor, backColor, selBackColor
 		colorN = None

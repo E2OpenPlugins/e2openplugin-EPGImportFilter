@@ -196,7 +196,7 @@ class EPGImportFilterWorker:
 			return ref
 		
 	def getChannelList(self, bouquetNames=None):
-		channels = [ ]
+		channels = []
 		serviceHandler = eServiceCenter.getInstance()
 		bouquet_rootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
 		bouquet_root = eServiceReference(bouquet_rootstr)
@@ -722,7 +722,7 @@ class EPGImportFilterWorker:
 		
 		self.status = "Saved " + str(len(matchings)) + " entries.."
 		
-		settingsMgr.storeUserSettings(sources={"sources" : self.epgSourcesChosen, "bouquets":self.bouquets, "matches": matches, "matchings": matchings})
+		settingsMgr.storeUserSettings(sources={"sources": self.epgSourcesChosen, "bouquets":self.bouquets, "matches": matches, "matchings": matchings})
 	
 	def loadAll(self):
 		cfg = settingsMgr.loadUserSettings()
