@@ -58,8 +58,11 @@ def bigStorage(minFree, default, *candidates):
 
 class SettingsMgr:
 	def __init__(self, sections):
-		self.settingsFile = resolveFilename(SCOPE_CURRENT_PLUGIN, "Extensions/EPGImportFilter/settings.conf")
+		self.settingsFile = resolveFilename(SCOPE_CONFIG, "") + "epgimportfilter.conf"
 		self.sections = sections
+		oldSettingsFile = resolveFilename(SCOPE_CURRENT_PLUGIN, "") + "Extensions/EPGImportFilter/settings.conf"
+		if os.path.exists(oldSettingsFile):
+			os.rename(oldSettingsFile, self.settingsFile)
 
 	def loadUserSettings(self):
 		#self.sources = {}
