@@ -28,7 +28,7 @@ from operator import itemgetter
 
 from ServiceReference import ServiceReference
 
-from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_CURRENT_PLUGIN
+from Tools.Directories import resolveFilename, SCOPE_CONFIG, SCOPE_CURRENT_PLUGIN
 
 import cPickle as pickle
 
