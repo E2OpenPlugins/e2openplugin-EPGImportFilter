@@ -1,7 +1,7 @@
 # for localized messages
 # for localized messages
 # for localized messages
-#from . import _
+from . import _
 
 import EPGImportFilterWorker
 import os

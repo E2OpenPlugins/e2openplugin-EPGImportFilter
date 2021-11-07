@@ -1,0 +1,123 @@
+# Language nl/LC translations for e package.
+# Copyright (C) 2021 THE e'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the e package.
+# Automatically generated, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: e 2openplugin-EPGImportFilter\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-07 12:24+0100\n"
+"PO-Revision-Date: 2021-11-07 13:29+0100\n"
+"Last-Translator: Frenske <voorzitter@openpli.org>\n"
+"Language-Team: none\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0\n"
+
+#: ../ui.py:903
+msgid "Advanced"
+msgstr "Uitgebreid"
+
+#: ../ui.py:390
+msgid "Advanced matching"
+msgstr "Uitgebreide overeenkomst"
+
+#: ../ui.py:874
+msgid "EPG Import Filter"
+msgstr "EPG Import Filter"
+
+#: ../ui.py:838 ../ui.py:1026
+msgid ""
+"EPGImport Filter Plugin\n"
+"Channels filtering will start\n"
+"This may take a few minutes\n"
+"Is this ok?"
+msgstr ""
+"EPGImport Filter Plugin\n"
+"Zender filtering start\n"
+"Dit kan enige minuten duren\n"
+"Is dit Ok?"
+
+#: ../ui.py:938
+msgid ""
+"EPGImport Filter Plugin\n"
+"Do you want to remove EPGImport channel filtering?"
+msgstr ""
+"EPGImport Filter Applicatie\n"
+"Wilt u EPGImport zender filtering verwijderen?"
+
+#: ../ui.py:800 ../ui.py:981
+msgid ""
+"EPGImport Filter Plugin\n"
+"Do you want to save your changes?"
+msgstr ""
+"EPGImport Filter Applicatie\n"
+"Wilt u de wijzigingen opslaan?"
+
+#: ../ui.py:1037
+msgid ""
+"EPGImport Filter Plugin\n"
+"Failed to start:\n"
+msgstr ""
+"EPGImport Filter Applicatie\n"
+"Start niet:\n"
+
+#: ../ui.py:948
+msgid "EPGImport Filter Service removed.."
+msgstr "EPGImport Filter Programma verwijderd.."
+
+#: ../ui.py:824 ../ui.py:1014
+msgid "EPGImport is not installed.."
+msgstr "EPGImport is niet geïnstalleerd.."
+
+#: ../plugin.py:29
+msgid "Filter EPGImport data for selected bouquets"
+msgstr "Filter de EPGImportgegevens voor geselecteerde boeketten"
+
+#: ../ui.py:444
+msgid "Filter channels"
+msgstr "Filter zenders"
+
+#: ../ui.py:446 ../ui.py:904
+msgid "Install"
+msgstr "Installeer"
+
+#: ../ui.py:442
+msgid "Load epg packages"
+msgstr "Laad de EPG pakketten"
+
+#: ../ui.py:318
+msgid "Proceed"
+msgstr "Ga door"
+
+#: ../ui.py:443
+msgid "Refresh matches"
+msgstr "Ververs de overeenkomsten"
+
+#: ../ui.py:445
+msgid "Save"
+msgstr "Sla op"
+
+#: ../ui.py:902
+msgid "Select All"
+msgstr "Kies alles"
+
+#: ../ui.py:297
+msgid "Select EPG sources"
+msgstr "Kies de EPG bronnen"
+
+#: ../ui.py:319
+msgid "Select all"
+msgstr "Kies alles"
+
+#: ../ui.py:901
+msgid "Uninstall"
+msgstr "Déinstalleer"
+
+#: ../ui.py:832 ../ui.py:1022
+msgid "You must choose at least one bouquet!"
+msgstr "U dient minimaal één boeket te kiezen!"
