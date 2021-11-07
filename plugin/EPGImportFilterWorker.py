@@ -1,4 +1,5 @@
 # EPGImportFilter Worker
+from . import _
 
 import os
 import time
