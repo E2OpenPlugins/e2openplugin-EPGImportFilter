@@ -14,7 +14,7 @@ def localeInit():
 def _(txt):
 	t = gettext.dgettext("EPGImportFilter", txt)
 	if t == txt:
-		print "[EPGImportFilter] fallback to default translation for", txt
+		print("[EPGImportFilter] fallback to default translation for", txt)
 		t = gettext.gettext(txt)
 	return t
 

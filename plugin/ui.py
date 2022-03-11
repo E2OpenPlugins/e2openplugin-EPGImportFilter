@@ -449,7 +449,7 @@ class EGPMatchByName(Screen):
 
 		self.channelMode = 1 # initiate on all channels
 		self.updateTimer = enigma.eTimer()
-	    	self.updateTimer.callback.append(self.updateStatus)
+		self.updateTimer.callback.append(self.updateStatus)
 
 		self.updateStatus()
 		self.updateTimer.start(2000)
@@ -636,7 +636,7 @@ class EGPMatchByName(Screen):
 			# call epg selection
 			self.session.openWithCallback(self.proceedEpgLoadCall, EGPSelectEPGSources)
 			#self.session.openWithCallback(epgWorker.epgLoad, MessageBox, _("EPGImport Filter Plugin\nChannels name comparing will start\nThis may take a few minutes\nIs this ok?"), MessageBox.TYPE_YESNO, timeout = 15, default = True)
-		except Exception, e:
+		except Exception as e:
 			epgWorker.status = "Failed to start: " + str(e)
 
 		self.updateStatus()
@@ -650,7 +650,7 @@ class EGPMatchByName(Screen):
 		try:
 			epgWorker.updateStatus = self.updateStatus
 			epgWorker.createFilteredChannelFile(True)
-		except Exception, e:
+		except Exception as e:
 			epgWorker.status = "Failed to start: " + str(e)
 
 		self.updateStatus()
@@ -665,7 +665,7 @@ class EGPMatchByName(Screen):
 			epgWorker.updateStatus = self.updateStatus
 			#epgWorker.doneLoading = self.doneLoadingChannels
 			epgWorker.createFilteredChannelFile()
-		except Exception, e:
+		except Exception as e:
 			epgWorker.status = "Failed to start: " + str(e)
 
 		self.updateStatus()
@@ -904,7 +904,7 @@ class EPGImportFilterScreen(Screen):
 		self["key_blue"] = Label(_("Install"))
 
 		self.updateTimer = enigma.eTimer()
-	    	self.updateTimer.callback.append(self.updateStatus)
+		self.updateTimer.callback.append(self.updateStatus)
 
 		self.updateStatus()
 		self.updateTimer.start(2000)
@@ -1033,7 +1033,7 @@ class EPGImportFilterScreen(Screen):
 			#epgWorker.bouquets = self.bouquets
 			epgWorker.updateStatus = self.updateStatus
 			epgWorker.createFilteredChannelFile()
-		except Exception, e:
+		except Exception as e:
 			self.session.open(MessageBox, _("EPGImport Filter Plugin\nFailed to start:\n") + str(e), MessageBox.TYPE_ERROR, timeout=15, close_on_any_key=True)
 
 		self.updateStatus()
