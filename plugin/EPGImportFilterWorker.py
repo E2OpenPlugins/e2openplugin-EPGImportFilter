@@ -36,25 +36,25 @@ import cPickle as pickle
 
 def bigStorage(minFree, default, *candidates):
 	try:
-            diskstat = os.statvfs(default)
-            free = diskstat.f_bfree * diskstat.f_bsize
-            if (free > minFree) and (free > 2000000):
-                return default
-        except Exception, e:
-            pass
-        mounts = open('/proc/mounts', 'rb').readlines()
-		# format: device mountpoint fstype options #
-        mountpoints = [x.split(' ', 2)[1] for x in mounts]
-        for candidate in candidates:
-            if candidate in mountpoints:
-                try:
-                    diskstat = os.statvfs(candidate)
-		    free = diskstat.f_bfree * diskstat.f_bsize
-		    if free > minFree:
-                        return candidate
-                except:
-                    pass
-    	return default
+		diskstat = os.statvfs(default)
+		free = diskstat.f_bfree * diskstat.f_bsize
+		if (free > minFree) and (free > 2000000):
+			return default
+	except Exception as e:
+		pass
+	mounts = open('/proc/mounts', 'rb').readlines()
+	# format: device mountpoint fstype options #
+	mountpoints = [x.split(' ', 2)[1] for x in mounts]
+	for candidate in candidates:
+		if candidate in mountpoints:
+			try:
+				diskstat = os.statvfs(candidate)
+				free = diskstat.f_bfree * diskstat.f_bsize
+				if free > minFree:
+					return candidate
+			except:
+				pass
+	return default
 
 
 class SettingsMgr:
@@ -121,8 +121,8 @@ class TimeMgr:
 			#suppose file says +0300 => that means we have to substract 3 hours from localtime to get gmt
 			timegm -= (3600 * int(values[1]) / 100)
 			return timegm
-		except Exception, e:
-			print "[XMLTVConverter] get_time_utc error:", e
+		except Exception as e:
+			print("[XMLTVConverter] get_time_utc error:", e)
 			return 0
 
 
@@ -282,7 +282,7 @@ class EPGImportFilterWorker:
 			for line in open('/etc/epgimport/rytec.sources.xml', 'r'):
 					try:
 						line = line.encode('utf-8')
-					except Exception, e:
+					except Exception as e:
 						pass
 					if not line.find("</channel>") == -1 and inChannels:
 						inChannels = False
@@ -418,7 +418,7 @@ class EPGImportFilterWorker:
 					# reference, name, compareName, channel mapped idx, id
 					cnt += 1
 					xmlChannels.append([ref, name, compareName, -1, cnt])
-		except Exception, e:
+		except Exception as e:
 			self.status = "Error on reading channel file:" + str(e)
 			self.active = False
 			return
@@ -496,7 +496,7 @@ class EPGImportFilterWorker:
 						text_file.write(line)
 				text_file.write('</channels>\n')
 				text_file.close()
-			except Exception, e:
+			except Exception as e:
 				self.status = "Error when writing channels: " + str(e)
 				self.active = False
 				return
@@ -659,7 +659,7 @@ class EPGImportFilterWorker:
 				#elif inProgramme and not line.find('<sub-title lang="') == -1:
 				#	subtitleName = line.split(">",1)[1].split("<",1)[0].strip()
 
-		except Exception, e:
+		except Exception as e:
 			self.status = "Error on reading epg: " + str(e)
 			errors = True
 
